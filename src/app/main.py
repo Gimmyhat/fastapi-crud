@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.db import engine
-from app.api import ping, notes
+from app.api import ping, routes
 from app.api.models import Base
 
 
@@ -11,4 +11,4 @@ app = FastAPI()
 
 
 app.include_router(ping.router)
-app.include_router(notes.router, prefix="/notes", tags=["notes"])
+app.include_router(routes.router, prefix="/api/v1/menus", tags=["menus"])
