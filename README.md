@@ -1,6 +1,6 @@
-# Developing and Testing an API with FastAPI and Pytest
+# Developing an API with FastAPI, SQLAlchemy, PostgresSQL
 
-Syncronous Example
+Menu -> Submenu -> Dish
 
 ## Want to use this project?
 
@@ -16,6 +16,5 @@ $ docker-compose down
 
 Test out the following routes:
 
-1. [http://localhost:8000/ping](http://localhost:8000/ping)
 1. [http://localhost:8000/docs](http://localhost:8000/docs)
-1. [http://localhost:8000/notes](http://localhost:8000/notes)
+
