@@ -12,6 +12,9 @@ $ docker-compose up -d --build
 ```sh
 $ docker-compose down
 ```
+```sh
+$ docker-compose exec web pytest -p no:warnings .
+```
 
 
 Test out the following routes:

@@ -1,5 +1,3 @@
-from typing import List
-
 from app.api import crud_menu, crud_submenu, crud_dish
 from app.api.models import *
 from app.db import SessionLocal
@@ -35,13 +33,13 @@ def read_menu(
     menu = crud_menu.get(db_session=db, id=id)
     if not menu:
         raise HTTPException(status_code=404, detail="menu not found")
-    submenus_count = db.query(Menu.submenus).filter(Menu.id == id).count()
-    dishes_count = db.query(Menu.dishes).filter(Menu.id == id).count()
+    if isinstance(menu, dict):
+        return menu
     return {"title": menu.title,
             "description": menu.description,
             "id": menu.id,
-            "submenus_count": submenus_count,
-            "dishes_count": dishes_count}
+            "submenus_count": len(menu.submenus),
+            "dishes_count": len(menu.dishes)}
 
 
 @router.get("/", response_model=List[menu_schema])
@@ -68,7 +66,7 @@ def delete_menu(
 ):
     menu = crud_menu.get(db_session=db, id=id)
     if not menu:
-        raise HTTPException(status_code=404, detail="Menu not found")
+        raise HTTPException(status_code=404, detail="menu not found")
     menu = crud_menu.delete(db_session=db, id=id)
     return menu
 
@@ -95,6 +93,8 @@ def read_submenu(
     if not submenu:
         raise HTTPException(status_code=404, detail="submenu not found")
     dishes_count = db.query(Submenu.dishes).filter(Submenu.id == id).count()
+    if isinstance(submenu, dict):
+        return submenu
     return {"title": submenu.title,
             "description": submenu.description,
             "id": submenu.id,

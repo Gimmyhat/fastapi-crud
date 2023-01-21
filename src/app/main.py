@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.db import engine
-from app.api import ping, routes
+from app.api import routes
 from app.api.models import Base
 
 
