@@ -37,11 +37,11 @@ def test_create_submenu(test_app, monkeypatch):
 
 
 def test_create_submenu_invalid_json(test_app):
-    response = test_app.post(f"{prefix}/", data=json.dumps({"title": "something"}))
+    response = test_app.post(f"{prefix}/", content=json.dumps({"title": "something"}))
     assert response.status_code == 422
 
     response = test_app.post(
-        f"{prefix}", data=json.dumps({"title": "1", "description": "2"})
+        f"{prefix}", content=json.dumps({"title": "1", "description": "2"})
     )
     assert response.status_code == 422
 
@@ -89,7 +89,7 @@ def test_update_submenu(test_app, monkeypatch):
 
     monkeypatch.setattr(crud, "put", mock_put)
 
-    response = test_app.patch(f"{prefix}/1/", data=json.dumps(test_update_data), )
+    response = test_app.patch(f"{prefix}/1/", content=json.dumps(test_update_data), )
     assert response.status_code == 200
     assert response.json()['title'] == test_update_data['title']
     assert response.json()['description'] == test_update_data['description']
@@ -112,7 +112,7 @@ def test_update_submenu_invalid(test_app, monkeypatch, id, payload, status_code)
 
     monkeypatch.setattr(crud, "get", mock_get)
 
-    response = test_app.patch(f"{prefix}/{id}/", data=json.dumps(payload), )
+    response = test_app.patch(f"{prefix}/{id}/", content=json.dumps(payload), )
     assert response.status_code == status_code
 
 

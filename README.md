@@ -13,7 +13,7 @@ $ docker-compose up -d --build
 $ docker-compose down
 ```
 ```sh
-$ docker-compose exec web pytest -p no:warnings .
+$ docker-compose exec web pytest .
 ```
 
 

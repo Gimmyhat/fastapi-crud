@@ -92,13 +92,12 @@ def read_submenu(
     submenu = crud_submenu.get(db_session=db, menu_id=menu_id, id=id)
     if not submenu:
         raise HTTPException(status_code=404, detail="submenu not found")
-    dishes_count = db.query(Submenu.dishes).filter(Submenu.id == id).count()
     if isinstance(submenu, dict):
         return submenu
     return {"title": submenu.title,
             "description": submenu.description,
             "id": submenu.id,
-            "dishes_count": dishes_count}
+            "dishes_count": len(submenu.dishes)}
 
 
 @router.patch("/{menu_id}/submenus/{id}/", response_model=submenu_schema, status_code=200)
