@@ -1,7 +1,8 @@
 version: '3.8'
 
 services:
-  web:
+  test_web:
+    container_name: test_web
     env_file:
       - .env
     build:
@@ -11,16 +12,17 @@ services:
     volumes:
       - ./src/:/usr/src/app/
     ports:
-      - "8000:8000"
+      - "8003:8000"
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=${DATABASE_URL_TEST}
     expose:
       - 5432
     depends_on:
-      db:
+      test_db:
         condition: service_healthy
 
-  db:
+  test_db:
+    container_name: test_db
     env_file:
       - .env
     image: postgres:15.1-alpine

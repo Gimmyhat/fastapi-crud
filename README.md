@@ -13,7 +13,13 @@ $ docker-compose up -d --build
 $ docker-compose down
 ```
 ```sh
-$ docker-compose exec web pytest .
+$ docker-compose --file docker-compose.test.yml up -d --build
+```
+```sh
+$ docker-compose --file docker-compose.test.yml down
+```
+```sh
+$ docker-compose exec test_web pytest .
 ```
 
 
