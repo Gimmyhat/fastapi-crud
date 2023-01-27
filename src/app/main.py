@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
-from app.db import engine
-from app.api import routes
-from app.api.models import Base
+from .db import engine
+from .api import routes
+from .api.models import Base
 
 
 Base.metadata.create_all(bind=engine)

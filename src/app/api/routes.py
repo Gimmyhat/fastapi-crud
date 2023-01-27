@@ -1,6 +1,8 @@
-from app.api import crud_menu, crud_submenu, crud_dish
-from app.api.models import *
-from app.db import SessionLocal
+from typing import List
+
+from . import crud_menu, crud_submenu, crud_dish
+from .models import *
+from ..db import SessionLocal
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.orm import Session
 

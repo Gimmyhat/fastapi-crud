@@ -1,7 +1,7 @@
 import json
 
 import pytest
-from app.api import crud_menu
+from ..api import crud_menu
 
 prefix = "/api/v1/menus"
 crud = crud_menu

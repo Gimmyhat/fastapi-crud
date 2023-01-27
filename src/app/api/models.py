@@ -1,10 +1,9 @@
-from typing import List
-
-from app.db import Base
 from pydantic import BaseModel, Field
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Numeric
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
+from ..db import Base
 
 
 # SQLAlchemy Model
