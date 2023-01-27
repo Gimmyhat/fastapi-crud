@@ -1,6 +1,7 @@
 import json
 
-from .models import *
+from .models import Menu
+from .schemas import BaseSchema
 from sqlalchemy.orm import Session
 
 table = Menu

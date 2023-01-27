@@ -1,4 +1,5 @@
-from .models import *
+from .models import Submenu
+from .schemas import SubmenuDB
 from sqlalchemy.orm import Session
 
 table = Submenu

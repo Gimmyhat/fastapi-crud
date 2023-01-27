@@ -1,4 +1,5 @@
-from .models import *
+from .models import Dish
+from .schemas import DishDB
 from sqlalchemy.orm import Session
 
 table = Dish
