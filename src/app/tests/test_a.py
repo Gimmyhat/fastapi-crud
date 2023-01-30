@@ -1,21 +1,22 @@
 import json
 
 import pytest
-from ..api import crud_menu
+
+from ..api import crud
 
 prefix = "/api/v1/menus"
-crud = crud_menu
 
 
 def test_read_all_menus(test_app, monkeypatch):
     test_data = []
 
-    def mock_get_all(db_session):
+    def mock_get_all(db):
         return test_data
 
-    monkeypatch.setattr(crud, "get_all", mock_get_all)
+    monkeypatch.setattr(crud, "get_models", mock_get_all)
 
     response = test_app.get(f"{prefix}/")
+
     assert response.status_code == 200
     assert response.json() == test_data
 
@@ -24,10 +25,10 @@ def test_create_menu(test_app, monkeypatch):
     test_request_payload = {"title": "My menu 1", "description": "My menu description 1"}
     test_response_payload = {"title": "My menu 1", "description": "My menu description 1", "id": '1'}
 
-    def mock_post(db_session, payload):
+    def mock_post(db, payload):
         return test_response_payload
 
-    monkeypatch.setattr(crud, "post", mock_post)
+    monkeypatch.setattr(crud, "create_model", mock_post)
     response = test_app.post(f"{prefix}/", content=json.dumps(test_request_payload), )
 
     assert response.status_code == 201
@@ -48,29 +49,28 @@ def test_create_menu_invalid_json(test_app):
 
 def test_read_menu(test_app, monkeypatch):
     test_data = {
-        "title": "string",
-        "description": "string",
-        "id": "string",
+        "title": "My menu 1",
+        "description": "My menu description 1",
+        "id": "1",
         "submenus_count": 0,
         "dishes_count": 0
     }
 
-    def mock_get(db_session, id):
+    def mock_get(db, id):
         return test_data
 
-    monkeypatch.setattr(crud, "get", mock_get)
+    monkeypatch.setattr(crud, "get_model", mock_get)
 
     response = test_app.get(f"{prefix}/1")
     assert response.status_code == 200
-    print(response.json())
     assert response.json() == test_data
 
 
 def test_read_menu_incorrect_id(test_app, monkeypatch):
-    def mock_get(db_session, id):
+    def mock_get(db, id):
         return None
 
-    monkeypatch.setattr(crud, "get", mock_get)
+    monkeypatch.setattr(crud, "get_model", mock_get)
 
     response = test_app.get(f"{prefix}/999")
     assert response.status_code == 404
@@ -81,15 +81,15 @@ def test_update_menu(test_app, monkeypatch):
     test_data = {"title": "something", "description": "something else", "id": "1"}
     test_update_data = {"title": "someone", "description": "someone else", "id": "1"}
 
-    def mock_get(db_session, id):
+    def mock_get(db, model, model_id):
         return test_data
 
-    monkeypatch.setattr(crud, "get", mock_get)
+    monkeypatch.setattr(crud, "get_model", mock_get)
 
-    def mock_put(db_session, menu, title, description):
+    def mock_put(db, model, model_id, schema):
         return test_update_data
 
-    monkeypatch.setattr(crud, "put", mock_put)
+    monkeypatch.setattr(crud, "update_model", mock_put)
 
     response = test_app.patch(f"{prefix}/1/", content=json.dumps(test_update_data), )
     assert response.status_code == 200
@@ -109,10 +109,10 @@ def test_update_menu(test_app, monkeypatch):
     ],
 )
 def test_update_menu_invalid(test_app, monkeypatch, id, payload, status_code):
-    def mock_get(db_session, id):
+    def mock_get(db, id):
         return None
 
-    monkeypatch.setattr(crud, "get", mock_get)
+    monkeypatch.setattr(crud, "get_model", mock_get)
 
     response = test_app.patch(f"{prefix}/{id}/", content=json.dumps(payload), )
     assert response.status_code == status_code
@@ -121,25 +121,25 @@ def test_update_menu_invalid(test_app, monkeypatch, id, payload, status_code):
 def test_remove_menu(test_app, monkeypatch):
     test_data = {"title": "something", "description": "something else", "id": '1'}
 
-    def mock_get(db_session, id):
+    def mock_get(db, model, model_id):
         return test_data
 
-    monkeypatch.setattr(crud, "get", mock_get)
+    monkeypatch.setattr(crud, "get_model", mock_get)
 
-    def mock_delete(db_session, id):
+    def mock_delete(db, model, model_id):
         return test_data
 
-    monkeypatch.setattr(crud, "delete", mock_delete)
+    monkeypatch.setattr(crud, "delete_model", mock_delete)
 
     response = test_app.delete(f"{prefix}/1/")
     assert response.status_code == 200
 
 
 def test_remove_menu_incorrect_id(test_app, monkeypatch):
-    def mock_get(db_session, id):
+    def mock_get(db, id):
         return None
 
-    monkeypatch.setattr(crud, "get", mock_get)
+    monkeypatch.setattr(crud, "get_model", mock_get)
 
     response = test_app.delete(f"{prefix}/999/")
     assert response.status_code == 404

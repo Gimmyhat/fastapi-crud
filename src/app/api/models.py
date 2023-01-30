@@ -5,9 +5,6 @@ from sqlalchemy.sql import func
 from ..db import Base
 
 
-# SQLAlchemy Model
-
-
 class Menu(Base):
     __tablename__ = "menus"
 
@@ -18,6 +15,14 @@ class Menu(Base):
 
     submenus = relationship('Submenu', cascade='all, delete')
     dishes = relationship('Dish', cascade='all, delete')
+
+    @property
+    def submenus_count(self):
+        return len(self.submenus)
+
+    @property
+    def dishes_count(self):
+        return len(self.dishes)
 
 
 class Submenu(Base):
@@ -30,6 +35,10 @@ class Submenu(Base):
 
     menu_id = Column(Integer, ForeignKey('menus.id'))
     dishes = relationship('Dish', cascade='all, delete')
+
+    @property
+    def dishes_count(self):
+        return len(self.dishes)
 
 
 class Dish(Base):
